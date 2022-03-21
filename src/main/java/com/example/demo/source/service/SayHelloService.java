@@ -12,7 +12,7 @@ public class SayHelloService {
 
     public SayHelloResponseDto sayXHello(Integer helloCount) {
         StringBuilder stringBuilder = new StringBuilder("");
-        IntStream.range(0, helloCount).forEach(i->stringBuilder.append(HELLO));
+        IntStream.range(0, helloCount).forEach(i -> stringBuilder.append(HELLO));
 
         SayHelloResponseDto result = new SayHelloResponseDto();
         result.setId(helloCount);

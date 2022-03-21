@@ -13,7 +13,7 @@ public class SayHelloController {
     private SayHelloService sayHelloService;
 
     @GetMapping("/{helloCount}")
-    public SayHelloResponseDto sayhello(@PathVariable Integer helloCount) {
+    public SayHelloResponseDto sayHello(@PathVariable Integer helloCount) {
         return sayHelloService.sayXHello(helloCount);
     }
 }
