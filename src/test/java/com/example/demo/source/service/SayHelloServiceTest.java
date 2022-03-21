@@ -26,9 +26,6 @@ public class SayHelloServiceTest {
     @InjectMocks
     private SayHelloService sayHelloService;
 
-    @Mock
-    private CustomerRepository customerRepository;
-
     private static final String HELLO = "Hello!";
 
     @Test
