@@ -17,5 +17,9 @@ public class PersonService {
         return personRepository.findAll();
     }
 
+    public void deleteAll() {
+        personRepository.deleteAll();
+    }
+
 
 }

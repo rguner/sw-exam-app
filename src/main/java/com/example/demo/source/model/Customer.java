@@ -14,7 +14,7 @@ public class Customer {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
-    private String age;
+    private Integer age;
     @CreationTimestamp
     @Column(name="created_at")
     private Date createdAt;

@@ -15,12 +15,12 @@ public class Person {
     @Id
     @GeneratedValue()
     private Long id;
-    private  String FirstName;
-    private  String LastName;
+    private String firstName;
+    private String lastName;
 
 
     public Person(String firstName, String lastName) {
-        FirstName = firstName;
-        LastName = lastName;
+        this.firstName = firstName;
+        this.lastName = lastName;
     }
 }

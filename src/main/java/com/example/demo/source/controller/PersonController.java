@@ -4,10 +4,7 @@ import com.example.demo.source.model.Person;
 import com.example.demo.source.service.PersonService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -22,5 +19,11 @@ public class PersonController {
     @ResponseStatus(HttpStatus.OK)
     public List<Person> getAllPeople() {
         return personService.getAllPeople();
+    }
+
+    @DeleteMapping
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteAll() {
+        personService.deleteAll();
     }
 }

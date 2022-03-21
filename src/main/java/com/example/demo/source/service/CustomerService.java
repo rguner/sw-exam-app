@@ -19,7 +19,7 @@ public class CustomerService {
     public Customer save(CustomerRequestDto customerRequestDto) {
         Customer customer = new Customer();
         customer.setName(customerRequestDto.getName());
-        customer.setAge(String.valueOf(customerRequestDto.getAge()));
+        customer.setAge(customerRequestDto.getAge());
         return customerRepository.save(customer);
     }
 
@@ -34,6 +34,10 @@ public class CustomerService {
         } else {
             throw new ElementNotFoundException("Customer not exist, id: " + id);
         }
+    }
+
+    public void deleteAll() {
+        customerRepository.deleteAll();
     }
 
 
