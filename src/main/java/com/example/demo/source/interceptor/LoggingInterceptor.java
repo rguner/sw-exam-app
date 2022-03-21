@@ -24,6 +24,6 @@ public class LoggingInterceptor implements HandlerInterceptor {
    public void afterCompletion
       (HttpServletRequest request, HttpServletResponse response, Object handler, Exception exception) throws Exception {
 
-      log.debug("Request: {} {}, Response: {}", request.getMethod(), request.getRequestURI(),  response.getStatus());
+      log.debug("[Request: {} {}, Response: {}]", request.getMethod(), request.getRequestURI(),  response.getStatus());
    }
 }

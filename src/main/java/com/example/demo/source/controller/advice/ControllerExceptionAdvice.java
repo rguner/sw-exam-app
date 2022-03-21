@@ -25,6 +25,7 @@ public class ControllerExceptionAdvice {
     @ResponseBody
     public Map<String, Object> exception(ElementNotFoundException elementNotFoundException) {
 
+        log.debug("ElementNotFoundException : ", elementNotFoundException);
         Map<String, Object> body = new LinkedHashMap<>();
         body.put("timestamp", LocalDateTime.now());
         body.put("message", elementNotFoundException.getMessage());
@@ -36,6 +37,7 @@ public class ControllerExceptionAdvice {
     @ResponseBody
     public Map<String, Object> onMethodArgumentNotValidException(MethodArgumentNotValidException methodArgumentNotValidException) {
 
+        log.warn("MethodArgumentNotValidException : ", methodArgumentNotValidException);
         Map<String, Object> body = new LinkedHashMap<>();
         body.put("timestamp", LocalDateTime.now());
         StringBuilder sb = new StringBuilder();

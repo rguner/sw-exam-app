@@ -4,6 +4,7 @@ import com.example.demo.source.dto.request.CustomerRequestDto;
 import com.example.demo.source.exception.ElementNotFoundException;
 import com.example.demo.source.model.Customer;
 import com.example.demo.source.repository.CustomerRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -11,6 +12,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
+@Slf4j
 public class CustomerService {
 
     @Autowired
