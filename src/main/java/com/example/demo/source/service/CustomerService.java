@@ -1,5 +1,6 @@
 package com.example.demo.source.service;
 
+import com.example.demo.source.dto.request.CustomerRequestDto;
 import com.example.demo.source.exception.ElementNotFoundException;
 import com.example.demo.source.model.Customer;
 import com.example.demo.source.repository.CustomerRepository;
@@ -15,7 +16,10 @@ public class CustomerService {
     @Autowired
     private CustomerRepository customerRepository;
 
-    public Customer save(Customer customer) {
+    public Customer save(CustomerRequestDto customerRequestDto) {
+        Customer customer = new Customer();
+        customer.setName(customerRequestDto.getName());
+        customer.setAge(String.valueOf(customerRequestDto.getAge()));
         return customerRepository.save(customer);
     }
 

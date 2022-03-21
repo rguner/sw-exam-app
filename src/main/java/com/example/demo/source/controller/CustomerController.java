@@ -1,5 +1,6 @@
 package com.example.demo.source.controller;
 
+import com.example.demo.source.dto.request.CustomerRequestDto;
 import com.example.demo.source.exception.ElementNotFoundException;
 import com.example.demo.source.model.Customer;
 import com.example.demo.source.repository.CustomerRepository;
@@ -10,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.WebRequest;
 
+import javax.validation.Valid;
 import java.time.LocalDateTime;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -27,8 +29,8 @@ public class CustomerController {
 
     @PostMapping()
     @ResponseStatus(HttpStatus.CREATED)
-    public Customer save(@RequestBody Customer customer) {
-        return customerService.save(customer);
+    public Customer save(@RequestBody @Valid CustomerRequestDto customerRequestDto) {
+        return customerService.save(customerRequestDto);
     }
 
     @GetMapping()
