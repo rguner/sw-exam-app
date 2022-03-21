@@ -1,8 +1,11 @@
 package com.example.demo.source.service;
 
-public class InttoWord {
+import org.springframework.stereotype.Service;
 
-    public static String Translate(Integer caseIndex) {
+@Service
+public class TranslateService {
+
+    public String translate(Integer caseIndex) {
         String defaultResponse = "";
         String response = "";
 

@@ -1,14 +1,11 @@
 package com.example.demo.source.controller;
 
-import com.example.demo.source.service.InttoWord;
 import com.example.demo.source.model.Person;
 import com.example.demo.source.repository.PersonRepository;
-import com.example.demo.source.dto.response.TranslateResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -24,16 +21,6 @@ public class PersonController {
 
         List<Person> persons = personrepository.findAll();
         return new ResponseEntity<List<Person>>(persons, HttpStatus.OK);
-    }
-
-    @GetMapping("/dotranslate/{value}")
-    public TranslateResult doTranslade(@PathVariable Integer value) {
-
-        TranslateResult result = new TranslateResult();
-        result.setId(value);
-        result.setName(InttoWord.Translate(value));
-
-        return result;
     }
 
 }

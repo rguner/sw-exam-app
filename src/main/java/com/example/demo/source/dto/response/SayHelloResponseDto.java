@@ -1,8 +1,8 @@
 package com.example.demo.source.dto.response;
 
-public class TranslateResult {
+public class SayHelloResponseDto {
     private Integer id;
-    private String name;
+    private String result;
 
     public Integer getId() {
         return id;
@@ -12,11 +12,11 @@ public class TranslateResult {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public String getResult() {
+        return result;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setResult(String result) {
+        this.result = result;
     }
 }
