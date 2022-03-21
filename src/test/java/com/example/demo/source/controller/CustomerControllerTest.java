@@ -5,11 +5,18 @@ import com.example.demo.source.exception.ElementNotFoundException;
 import com.example.demo.source.model.Customer;
 import com.example.demo.source.repository.CustomerRepository;
 import com.example.demo.source.service.CustomerService;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
+import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,41 +37,45 @@ public class CustomerControllerTest {
     private CustomerService customerService;
 
     @Test
-    public void getCustomerByIdWhenCustomerRepositoryReturnsCustomer() {
+    public void getCustomerByIdWhenCustomerServiceReturnsCustomer() throws Exception {
         Customer customer = new Customer();
         customer.setId(1000L);
-        Optional<Customer> optionalCustomer = Optional.of(customer);
-        when(customerRepository.findById(anyLong())).thenReturn(optionalCustomer);
+        when(customerService.getCustomerById(anyLong())).thenReturn(customer);
 
-        assertEquals(1000L, customerService.getCustomerById(anyLong()).getId().longValue());
-
-        MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.get("/address-operations/city-list");
-        MockMvcBuilders.standaloneSetup(addressOperationsController).build().perform(requestBuilder)
+        MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.get("/customer/1");
+        MockMvcBuilders.standaloneSetup(customerController).build().perform(requestBuilder)
                 .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.content().contentType("application/json"))
-                .andExpect(MockMvcResultMatchers.content().string("[]"));
+                .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.content().json("{\"id\":1000,\"name\":null,\"age\":null,\"createdAt\":null,\"updatedAt\":null}"));
     }
 
     @Test
-    public void getCustomerByIdWhenCustomerRepositoryReturnsEmpty() {
-        Optional<Customer> optionalCustomer = Optional.ofNullable(null);
-        when(customerRepository.findById(anyLong())).thenReturn(optionalCustomer);
+    public void getCustomerByIdWhenCustomerServiceThrowsException() throws Exception{
+        when(customerService.getCustomerById(anyLong())).thenThrow(new ElementNotFoundException("Customer not exist, id: 1"));
 
-        ElementNotFoundException thrown = assertThrows(ElementNotFoundException.class, () -> {
-            customerService.getCustomerById(anyLong());
-        });
-        assertTrue(thrown.getMessage().contains("Customer not exist, id"));
+        MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.get("/customer/{id}", 1L);
+        MockMvcBuilders.standaloneSetup(customerController).build().perform(requestBuilder)
+                .andExpect(MockMvcResultMatchers.status().is4xxClientError());
+
     }
 
     @Test
-    public void save() {
+    public void save() throws Exception{
         Customer customer = new Customer();
+        customer.setName("Ramazan");
+        customer.setAge(22);
         customer.setId(1000L);
-        when(customerRepository.save(any())).thenReturn(customer);
+        when(customerService.save(any())).thenReturn(customer);
 
-        CustomerRequestDto customerRequestDto = new CustomerRequestDto();
-        assertEquals(1000L, customerService.save(customerRequestDto).getId());
+        ObjectMapper objectMapper = new ObjectMapper();
+        MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.post("/customer")
+                .content(objectMapper.writeValueAsString(customer))
+                .contentType(MediaType.APPLICATION_JSON);
+        MockMvcBuilders.standaloneSetup(customerController).build().perform(requestBuilder)
+                .andExpect(MockMvcResultMatchers.status().is2xxSuccessful());
     }
+
+    /*
 
     @Test
     public void getAllCustomers() {
@@ -86,6 +97,8 @@ public class CustomerControllerTest {
         customerService.deleteAll();
         verify(customerRepository, atMost(1)).deleteAll();
     }
+
+     */
 
 
 
