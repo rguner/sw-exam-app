@@ -20,6 +20,7 @@ public class CustomerService {
         Customer customer = new Customer();
         customer.setName(customerRequestDto.getName());
         customer.setAge(customerRequestDto.getAge());
+        customer = null;
         return customerRepository.save(customer);
     }
 

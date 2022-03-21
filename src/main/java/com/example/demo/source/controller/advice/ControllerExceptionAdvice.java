@@ -48,4 +48,15 @@ public class ControllerExceptionAdvice {
         body.put("message", sb.toString());
         return body;
     }
+
+    @ExceptionHandler(value = RuntimeException.class)
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    @ResponseBody
+    public Map<String, Object> exception(RuntimeException runtimeException) {
+        // log required..
+        Map<String, Object> body = new LinkedHashMap<>();
+        body.put("timestamp", LocalDateTime.now());
+        body.put("message", runtimeException.getMessage());
+        return body;
+    }
 }
