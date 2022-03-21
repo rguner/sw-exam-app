@@ -22,7 +22,7 @@ public class CustomerService {
     }
 
     public Customer getCustomerById(Long id) {
-       return customerRepository.findById(id).get();
+        return customerRepository.findById(id).get();
     }
 
 

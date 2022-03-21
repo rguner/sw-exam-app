@@ -5,11 +5,9 @@ import com.example.demo.source.repository.CustomerRepository;
 import com.example.demo.source.service.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/customer")
@@ -24,7 +22,7 @@ public class CustomerController {
     @PostMapping()
     @ResponseStatus(HttpStatus.CREATED)
     public Customer save(@RequestBody Customer customer) {
-        return  customerService.save(customer);
+        return customerService.save(customer);
     }
 
     @GetMapping()
