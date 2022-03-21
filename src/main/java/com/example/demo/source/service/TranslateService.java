@@ -6,10 +6,10 @@ import org.springframework.stereotype.Service;
 @Service
 public class TranslateService {
 
-    public TranslateResponseDto translate(Integer caseIndex) {
+    public TranslateResponseDto translate(Integer value) {
         TranslateResponseDto result = new TranslateResponseDto();
-        result.setId(caseIndex);
-        result.setName(translateInner(caseIndex));
+        result.setId(value);
+        result.setName(translateInner(value));
         return result;
     }
 
