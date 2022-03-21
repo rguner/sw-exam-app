@@ -21,5 +21,9 @@ public class PersonService {
         personRepository.deleteAll();
     }
 
+    public Person save(Person person) {
+        return personRepository.save(person);
+    }
+
 
 }
