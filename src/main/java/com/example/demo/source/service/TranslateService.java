@@ -3,8 +3,30 @@ package com.example.demo.source.service;
 import com.example.demo.source.dto.response.TranslateResponseDto;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.PostConstruct;
+import java.util.HashMap;
+import java.util.Map;
+
 @Service
 public class TranslateService {
+
+    private Map<Integer, String> translateMap;
+
+    @PostConstruct
+    private void init() {
+        translateMap = new HashMap<>();
+        translateMap.put(0, "Zero");
+        translateMap.put(1, "One");
+        translateMap.put(2, "Two");
+        translateMap.put(3, "Three");
+        translateMap.put(4, "Four");
+        translateMap.put(5, "Five");
+        translateMap.put(6, "Six");
+        translateMap.put(7, "Seven");
+        translateMap.put(8, "Eight");
+        translateMap.put(9, "Nine");
+        translateMap.put(10, "Ten");
+    }
 
     public TranslateResponseDto translate(Integer value) {
         TranslateResponseDto result = new TranslateResponseDto();
@@ -14,45 +36,8 @@ public class TranslateService {
     }
 
     private String translateInner(Integer caseIndex) {
-        String defaultResponse = "";
-        String response = "";
 
-        switch (caseIndex) {
-            case 0:
-                response = "Zero";
-                break;
-            case 1:
-                response = "One";
-                break;
-            case 2:
-                response = "Two";
-                break;
-            case 3:
-                response = "Three";
-            case 4:
-                response = "Four";
-                break;
-            case 5:
-                response = "Five";
-                break;
-            case 6:
-                response = "Six";
-                break;
-            case 7:
-                response = "Seven";
-                break;
-            case 8:
-                response = "Eight";
-                break;
-            case 9:
-                response = "Nine";
-                break;
-            case 10:
-                response = "Ten";
-                break;
-            default:
-                response = "Not supported";
-        }
-        return response;
+        String response = translateMap.get(caseIndex);
+        return response != null ? response : "Not supported";
     }
 }
