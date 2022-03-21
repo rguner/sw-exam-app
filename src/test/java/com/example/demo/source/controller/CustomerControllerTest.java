@@ -1,0 +1,92 @@
+package com.example.demo.source.controller;
+
+import com.example.demo.source.dto.request.CustomerRequestDto;
+import com.example.demo.source.exception.ElementNotFoundException;
+import com.example.demo.source.model.Customer;
+import com.example.demo.source.repository.CustomerRepository;
+import com.example.demo.source.service.CustomerService;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.Mockito.*;
+
+@ExtendWith(MockitoExtension.class)
+public class CustomerControllerTest {
+
+    @InjectMocks
+    private CustomerController customerController;
+
+    @Mock
+    private CustomerService customerService;
+
+    @Test
+    public void getCustomerByIdWhenCustomerRepositoryReturnsCustomer() {
+        Customer customer = new Customer();
+        customer.setId(1000L);
+        Optional<Customer> optionalCustomer = Optional.of(customer);
+        when(customerRepository.findById(anyLong())).thenReturn(optionalCustomer);
+
+        assertEquals(1000L, customerService.getCustomerById(anyLong()).getId().longValue());
+
+        MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.get("/address-operations/city-list");
+        MockMvcBuilders.standaloneSetup(addressOperationsController).build().perform(requestBuilder)
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.content().contentType("application/json"))
+                .andExpect(MockMvcResultMatchers.content().string("[]"));
+    }
+
+    @Test
+    public void getCustomerByIdWhenCustomerRepositoryReturnsEmpty() {
+        Optional<Customer> optionalCustomer = Optional.ofNullable(null);
+        when(customerRepository.findById(anyLong())).thenReturn(optionalCustomer);
+
+        ElementNotFoundException thrown = assertThrows(ElementNotFoundException.class, () -> {
+            customerService.getCustomerById(anyLong());
+        });
+        assertTrue(thrown.getMessage().contains("Customer not exist, id"));
+    }
+
+    @Test
+    public void save() {
+        Customer customer = new Customer();
+        customer.setId(1000L);
+        when(customerRepository.save(any())).thenReturn(customer);
+
+        CustomerRequestDto customerRequestDto = new CustomerRequestDto();
+        assertEquals(1000L, customerService.save(customerRequestDto).getId());
+    }
+
+    @Test
+    public void getAllCustomers() {
+        List<Customer> customerList = new ArrayList<>();
+        Customer customer = new Customer();
+        customer.setId(1000L);
+        customerList.add(customer);
+        when(customerRepository.findAll()).thenReturn(customerList);
+
+        assertEquals(1, customerService.getAllCustomers().size());
+    }
+
+    @Test
+    public void deleteAll() {
+        doAnswer(i -> {
+            return null;
+        }).when(customerRepository).deleteAll();
+
+        customerService.deleteAll();
+        verify(customerRepository, atMost(1)).deleteAll();
+    }
+
+
+
+}

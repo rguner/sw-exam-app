@@ -22,9 +22,6 @@ import java.util.Map;
 public class CustomerController {
 
     @Autowired
-    CustomerRepository customerRepository;
-
-    @Autowired
     private CustomerService customerService;
 
     @PostMapping()
