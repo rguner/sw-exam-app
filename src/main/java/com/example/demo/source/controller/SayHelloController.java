@@ -12,13 +12,8 @@ public class SayHelloController {
     @Autowired
     private SayHelloService sayHelloService;
 
-    @GetMapping("/{value}")
-    public SayHelloResponseDto sayhello(@PathVariable Integer value) {
-
-        SayHelloResponseDto result = new SayHelloResponseDto();
-        result.setId(value);
-        result.setResult(sayHelloService.sayXHello(value));
-
-        return result;
+    @GetMapping("/{helloCount}")
+    public SayHelloResponseDto sayhello(@PathVariable Integer helloCount) {
+        return sayHelloService.sayXHello(helloCount);
     }
 }
