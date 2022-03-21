@@ -1,11 +1,19 @@
 package com.example.demo.source.service;
 
+import com.example.demo.source.dto.response.TranslateResponseDto;
 import org.springframework.stereotype.Service;
 
 @Service
 public class TranslateService {
 
-    public String translate(Integer caseIndex) {
+    public TranslateResponseDto translate(Integer caseIndex) {
+        TranslateResponseDto result = new TranslateResponseDto();
+        result.setId(caseIndex);
+        result.setName(translateInner(caseIndex));
+        return result;
+    }
+
+    private String translateInner(Integer caseIndex) {
         String defaultResponse = "";
         String response = "";
 

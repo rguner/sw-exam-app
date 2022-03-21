@@ -17,11 +17,6 @@ public class TranslateController {
 
     @GetMapping("/{value}")
     public TranslateResponseDto doTranslate(@PathVariable Integer value) {
-
-        TranslateResponseDto result = new TranslateResponseDto();
-        result.setId(value);
-        result.setName(translateService.translate(value));
-
-        return result;
+        return translateService.translate(value);
     }
 }
