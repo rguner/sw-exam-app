@@ -1,5 +1,7 @@
-package com.example.demo.source;
+package com.example.demo.source.controller;
 
+import com.example.demo.source.Customer;
+import com.example.demo.source.CustomerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -9,12 +11,10 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-public class Controller {
+public class CustomerController {
 
     @Autowired
     CustomerRepository customerRepository;
-    @Autowired
-    Personrepository personrepository;
 
     @PostMapping("/customers")
     public ResponseEntity<Customer> save(@RequestBody Customer customer) {
@@ -25,6 +25,7 @@ public class Controller {
             return null;
         }
     }
+
     @GetMapping("/customers")
     public ResponseEntity<List<Customer>> getAllCustomers() {
 
@@ -39,31 +40,4 @@ public class Controller {
         return new ResponseEntity<Customer>(customer.get(), HttpStatus.OK);
     }
 
-
-    @GetMapping("/person")
-    public ResponseEntity<List<Person>> getAllPersons() {
-
-        List<Person> persons = personrepository.findAll();
-        return new ResponseEntity<List<Person>>(persons, HttpStatus.OK);
-    }
-
-    @GetMapping("/dotranslate/{value}")
-    public TranslateResult  doTranslade(@PathVariable Integer value) {
-
-        TranslateResult result = new TranslateResult();
-        result.setId(value);
-        result.setName(InttoWord.Translate(value));
-
-        return result;
-    }
-
-    @GetMapping("/sayhello/{value}")
-    public SayhelloResult  sayhello(@PathVariable Integer value) {
-
-        SayhelloResult result = new SayhelloResult();
-        result.setId(value);
-        result.setResult(Sayhello.SayXHello(value));
-
-        return result;
-    }
 }
