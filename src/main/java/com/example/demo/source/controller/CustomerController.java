@@ -1,7 +1,7 @@
 package com.example.demo.source.controller;
 
-import com.example.demo.source.Customer;
-import com.example.demo.source.CustomerRepository;
+import com.example.demo.source.model.Customer;
+import com.example.demo.source.repository.CustomerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

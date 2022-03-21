@@ -1,4 +1,4 @@
-package com.example.demo.source;
+package com.example.demo.source.dto.response;
 
 public class TranslateResult {
     private Integer id;

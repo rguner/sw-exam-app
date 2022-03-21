@@ -1,9 +1,9 @@
 package com.example.demo.source.controller;
 
-import com.example.demo.source.InttoWord;
-import com.example.demo.source.Person;
-import com.example.demo.source.Personrepository;
-import com.example.demo.source.TranslateResult;
+import com.example.demo.source.service.InttoWord;
+import com.example.demo.source.model.Person;
+import com.example.demo.source.repository.PersonRepository;
+import com.example.demo.source.dto.response.TranslateResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,7 +17,7 @@ import java.util.List;
 public class PersonController {
 
     @Autowired
-    Personrepository personrepository;
+    PersonRepository personrepository;
 
     @GetMapping("/person")
     public ResponseEntity<List<Person>> getAllPersons() {
