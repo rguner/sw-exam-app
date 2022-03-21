@@ -38,12 +38,12 @@ public class ControllerExceptionAdvice {
         body.put("timestamp", LocalDateTime.now());
         StringBuilder sb = new StringBuilder();
         for (FieldError fieldError : methodArgumentNotValidException.getBindingResult().getFieldErrors()) {
-           if (sb.length()>0) {
-               sb.append(" | ");
-           }
-           sb.append(fieldError.getField());
-           sb.append(" - ");
-           sb.append(fieldError.getDefaultMessage());
+            if (sb.length() > 0) {
+                sb.append(" | ");
+            }
+            sb.append(fieldError.getField());
+            sb.append(" - ");
+            sb.append(fieldError.getDefaultMessage());
         }
         body.put("message", sb.toString());
         return body;
