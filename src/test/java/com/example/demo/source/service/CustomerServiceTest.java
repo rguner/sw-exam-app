@@ -1,5 +1,6 @@
 package com.example.demo.source.service;
 
+import com.example.demo.source.exception.ElementNotFoundException;
 import com.example.demo.source.model.Customer;
 import com.example.demo.source.repository.CustomerRepository;
 import org.junit.jupiter.api.Test;
@@ -10,7 +11,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.when;
 
@@ -24,7 +25,7 @@ public class CustomerServiceTest {
     private CustomerRepository customerRepository;
 
     @Test
-    public void getCustomerById() {
+    public void getCustomerByIdWhenCustomerRepositoryReturnsCustomer() {
         Customer customer = new Customer();
         customer.setId(1000L);
         Optional<Customer> optionalCustomer = Optional.of(customer);
@@ -32,4 +33,16 @@ public class CustomerServiceTest {
 
         assertEquals(1000L, customerService.getCustomerById(anyLong()).getId().longValue());
     }
+
+    @Test
+    public void getCustomerByIdWhenCustomerRepositoryReturnsEmpty() {
+        Optional<Customer> optionalCustomer = Optional.ofNullable(null);
+        when(customerRepository.findById(anyLong())).thenReturn(optionalCustomer);
+
+        ElementNotFoundException thrown = assertThrows(ElementNotFoundException.class, () -> {
+            customerService.getCustomerById(anyLong());
+        });
+        assertTrue(thrown.getMessage().contains("Customer not exist, id"));
+    }
+
 }
