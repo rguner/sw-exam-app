@@ -1,5 +1,6 @@
 package com.example.demo.source.service;
 
+import com.example.demo.source.dto.request.CustomerRequestDto;
 import com.example.demo.source.exception.ElementNotFoundException;
 import com.example.demo.source.model.Customer;
 import com.example.demo.source.repository.CustomerRepository;
@@ -12,6 +13,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.when;
 
@@ -44,5 +46,17 @@ public class CustomerServiceTest {
         });
         assertTrue(thrown.getMessage().contains("Customer not exist, id"));
     }
+
+    @Test
+    public void save() {
+        Customer customer = new Customer();
+        customer.setId(1000L);
+        when(customerRepository.save(any())).thenReturn(customer);
+
+        CustomerRequestDto customerRequestDto = new CustomerRequestDto();
+        assertEquals(1000L, customerService.save(customerRequestDto).getId());
+    }
+
+
 
 }
