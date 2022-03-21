@@ -28,17 +28,15 @@ public class CustomerController {
     }
 
     @GetMapping()
-    public ResponseEntity<List<Customer>> getAllCustomers() {
-
-        List<Customer> customers = customerRepository.findAll();
-        return new ResponseEntity<List<Customer>>(customers, HttpStatus.OK);
+    @ResponseStatus(HttpStatus.OK)
+    public List<Customer> getAllCustomers() {
+        return customerService.getAllCustomers();
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Customer> getCustomerById(@PathVariable Long id) {
-
-        Optional<Customer> customer = customerRepository.findById(id);
-        return new ResponseEntity<Customer>(customer.get(), HttpStatus.OK);
+    @ResponseStatus(HttpStatus.OK)
+    public Customer getCustomerById(@PathVariable Long id) {
+        return customerService.getCustomerById(id);
     }
 
 }
