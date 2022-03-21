@@ -5,19 +5,12 @@ import org.springframework.stereotype.Service;
 @Service
 public class SayHelloService {
 
-    public String sayXHello(Integer x) {
-        String xHello = "";
-        for (int i = 0; i < x; i++) {
-            xHello = xHello + "Hello!";
+    private static final String HELLO = "Hello!";
+    public String sayXHello(Integer helloCount) {
+        StringBuilder stringBuilder = new StringBuilder("");
+        for (int i = 0; i < helloCount; i++) {
+            stringBuilder.append(HELLO);
         }
-        return xHello;
-    }
-
-    public String sayOnceHello() {
-        return "Hello!";
-    }
-
-    public String sayTwiceHello() {
-        return "Hello! Hello!";
+        return stringBuilder.toString();
     }
 }
