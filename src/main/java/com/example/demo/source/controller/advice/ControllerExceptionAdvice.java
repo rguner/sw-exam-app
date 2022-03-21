@@ -1,6 +1,7 @@
 package com.example.demo.source.controller.advice;
 
 import com.example.demo.source.exception.ElementNotFoundException;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
@@ -16,6 +17,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 @ControllerAdvice
+@Slf4j
 public class ControllerExceptionAdvice {
 
     @ExceptionHandler(value = ElementNotFoundException.class)
@@ -53,7 +55,7 @@ public class ControllerExceptionAdvice {
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     @ResponseBody
     public Map<String, Object> exception(RuntimeException runtimeException) {
-        // log required..
+        log.error("Error occurred: ", runtimeException);
         Map<String, Object> body = new LinkedHashMap<>();
         body.put("timestamp", LocalDateTime.now());
         body.put("message", runtimeException.getMessage());
