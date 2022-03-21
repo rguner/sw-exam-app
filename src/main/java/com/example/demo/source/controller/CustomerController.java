@@ -24,16 +24,7 @@ public class CustomerController {
     @PostMapping()
     @ResponseStatus(HttpStatus.CREATED)
     public Customer save(@RequestBody Customer customer) {
-
         return  customerService.save(customer);
-    /*
-        try {
-            return new ResponseEntity<>(customerRepository.save(customer), HttpStatus.CREATED);
-        } catch (Exception e) {
-            return null;
-        }
-
-     */
     }
 
     @GetMapping()
