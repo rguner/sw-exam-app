@@ -1,21 +1,14 @@
 package com.example.demo.source.controller;
 
 import com.example.demo.source.dto.request.CustomerRequestDto;
-import com.example.demo.source.exception.ElementNotFoundException;
 import com.example.demo.source.model.Customer;
-import com.example.demo.source.repository.CustomerRepository;
 import com.example.demo.source.service.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.context.request.WebRequest;
 
 import javax.validation.Valid;
-import java.time.LocalDateTime;
-import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
 
 @RestController
 @RequestMapping("/customer")

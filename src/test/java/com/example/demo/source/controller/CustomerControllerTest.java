@@ -1,9 +1,7 @@
 package com.example.demo.source.controller;
 
-import com.example.demo.source.dto.request.CustomerRequestDto;
 import com.example.demo.source.exception.ElementNotFoundException;
 import com.example.demo.source.model.Customer;
-import com.example.demo.source.repository.CustomerRepository;
 import com.example.demo.source.service.CustomerService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
@@ -11,7 +9,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
@@ -20,12 +17,11 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.doAnswer;
+import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 public class CustomerControllerTest {
@@ -50,7 +46,7 @@ public class CustomerControllerTest {
     }
 
     @Test
-    public void getCustomerByIdWhenCustomerServiceThrowsException() throws Exception{
+    public void getCustomerByIdWhenCustomerServiceThrowsException() throws Exception {
         when(customerService.getCustomerById(anyLong())).thenThrow(new ElementNotFoundException("Customer not exist, id: 1"));
 
         MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.get("/customer/{id}", 1L);
@@ -60,7 +56,7 @@ public class CustomerControllerTest {
     }
 
     @Test
-    public void save() throws Exception{
+    public void save() throws Exception {
         Customer customer = new Customer();
         customer.setName("Ramazan");
         customer.setAge(22);
@@ -75,31 +71,29 @@ public class CustomerControllerTest {
                 .andExpect(MockMvcResultMatchers.status().is2xxSuccessful());
     }
 
-    /*
-
     @Test
-    public void getAllCustomers() {
+    public void getAllCustomers() throws Exception {
         List<Customer> customerList = new ArrayList<>();
         Customer customer = new Customer();
         customer.setId(1000L);
         customerList.add(customer);
-        when(customerRepository.findAll()).thenReturn(customerList);
+        when(customerService.getAllCustomers()).thenReturn(customerList);
 
-        assertEquals(1, customerService.getAllCustomers().size());
+        MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.get("/customer");
+        MockMvcBuilders.standaloneSetup(customerController).build().perform(requestBuilder)
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON));
     }
 
     @Test
-    public void deleteAll() {
+    public void deleteAll() throws Exception {
         doAnswer(i -> {
             return null;
-        }).when(customerRepository).deleteAll();
+        }).when(customerService).deleteAll();
 
-        customerService.deleteAll();
-        verify(customerRepository, atMost(1)).deleteAll();
+        MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.delete("/customer");
+        MockMvcBuilders.standaloneSetup(customerController).build().perform(requestBuilder)
+                .andExpect(MockMvcResultMatchers.status().is2xxSuccessful());
     }
-
-     */
-
-
 
 }
