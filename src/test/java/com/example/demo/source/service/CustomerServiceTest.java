@@ -10,12 +10,14 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 public class CustomerServiceTest {
@@ -55,6 +57,27 @@ public class CustomerServiceTest {
 
         CustomerRequestDto customerRequestDto = new CustomerRequestDto();
         assertEquals(1000L, customerService.save(customerRequestDto).getId());
+    }
+
+    @Test
+    public void getAllCustomers() {
+        List<Customer> customerList = new ArrayList<>();
+        Customer customer = new Customer();
+        customer.setId(1000L);
+        customerList.add(customer);
+        when(customerRepository.findAll()).thenReturn(customerList);
+
+        assertEquals(1, customerService.getAllCustomers().size());
+    }
+
+    @Test
+    public void deleteAll() {
+        doAnswer(i -> {
+            return null;
+        }).when(customerRepository).deleteAll();
+
+        customerService.deleteAll();
+        verify(customerRepository, atMost(1)).deleteAll();
     }
 
 
