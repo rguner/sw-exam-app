@@ -1,0 +1,18 @@
+.gitignore file added. Because target and .idea folder shouldn't store to the repository
+Lombok integreted to Customer, Person, TranslateResponseDto, SayHelloResponseDto model classes.
+I divided controller class into four seperete class. CustomerController, PersonController, SayHalleController, TranslateController
+I extracted usage of repository classes from controller classes. I created service classes. CustomerService, PersonService, SayHalleService, TranslateService
+ElementNotFoundException was created for giving information that doesn't exist in database.
+sayhello method in SayHelloService was redesigned. I used StringBuilder instead of string concat. Because, string is an immutable class.
+ControllerExceptionAdvice was created. It catches some exceptions like ElementNotFoundException, RuntimeException and returns specified http return codes.
+Translate service was redesigned. I used hashMap to store numbers and values instead of switch block.
+I created dto models for input and output. CustomerRequestDto, SayHelloResponseDto
+I added validation annotations to CustomerRequestDto for input validation. I added to ControllerExceptionAdvice class a new method for catching MethodArgumentNotValidException validation errors.
+I created InitConfiguration @Configuration class for environment specific behavior.
+Unit tests were created for Service and Controller classes. Coverage is %100 for these classes.
+LoggingInterceptor was added for logging request uri and response status.
+
+
+
+
+
