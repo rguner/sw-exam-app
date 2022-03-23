@@ -38,7 +38,7 @@ public class CustomerControllerTest {
         customer.setId(1000L);
         when(customerService.getCustomerById(anyLong())).thenReturn(customer);
 
-        MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.get("/customer/1");
+        MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.get("/customer/{id}", 1);
         MockMvcBuilders.standaloneSetup(customerController).build().perform(requestBuilder)
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON))
