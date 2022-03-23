@@ -1,15 +1,18 @@
 package com.example.demo.source.controller;
 
+import com.example.demo.source.controller.advice.ControllerExceptionAdvice;
 import com.example.demo.source.exception.ElementNotFoundException;
 import com.example.demo.source.model.Customer;
 import com.example.demo.source.service.CustomerService;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.MediaType;
+import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
@@ -29,8 +32,20 @@ public class CustomerControllerTest {
     @InjectMocks
     private CustomerController customerController;
 
+    @InjectMocks
+    private ControllerExceptionAdvice controllerExceptionAdvice;
+
     @Mock
     private CustomerService customerService;
+
+    private MockMvc mvc;
+
+    @BeforeEach
+    public void setup() {
+        mvc = MockMvcBuilders.standaloneSetup(customerController)
+                .setControllerAdvice(controllerExceptionAdvice)
+                .build();
+    }
 
     @Test
     public void getCustomerByIdWhenCustomerServiceReturnsCustomer() throws Exception {
@@ -38,8 +53,8 @@ public class CustomerControllerTest {
         customer.setId(1000L);
         when(customerService.getCustomerById(anyLong())).thenReturn(customer);
 
-        MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.get("/customer/1");
-        MockMvcBuilders.standaloneSetup(customerController).build().perform(requestBuilder)
+        MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.get("/customer/{id}", 1);
+        mvc.perform(requestBuilder)
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.content().json("{\"id\":1000,\"name\":null,\"age\":null,\"createdAt\":null,\"updatedAt\":null}"));
@@ -50,7 +65,7 @@ public class CustomerControllerTest {
         when(customerService.getCustomerById(anyLong())).thenThrow(new ElementNotFoundException("Customer not exist, id: 1"));
 
         MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.get("/customer/{id}", 1L);
-        MockMvcBuilders.standaloneSetup(customerController).build().perform(requestBuilder)
+        mvc.perform(requestBuilder)
                 .andExpect(MockMvcResultMatchers.status().is4xxClientError());
 
     }
@@ -67,7 +82,7 @@ public class CustomerControllerTest {
         MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.post("/customer")
                 .content(objectMapper.writeValueAsString(customer))
                 .contentType(MediaType.APPLICATION_JSON);
-        MockMvcBuilders.standaloneSetup(customerController).build().perform(requestBuilder)
+        mvc.perform(requestBuilder)
                 .andExpect(MockMvcResultMatchers.status().is2xxSuccessful());
     }
 
@@ -80,7 +95,7 @@ public class CustomerControllerTest {
         when(customerService.getAllCustomers()).thenReturn(customerList);
 
         MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.get("/customer");
-        MockMvcBuilders.standaloneSetup(customerController).build().perform(requestBuilder)
+        mvc.perform(requestBuilder)
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON));
     }
@@ -92,7 +107,7 @@ public class CustomerControllerTest {
         }).when(customerService).deleteAll();
 
         MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.delete("/customer");
-        MockMvcBuilders.standaloneSetup(customerController).build().perform(requestBuilder)
+        mvc.perform(requestBuilder)
                 .andExpect(MockMvcResultMatchers.status().is2xxSuccessful());
     }
 
