@@ -32,7 +32,6 @@ import static org.mockito.Mockito.when;
 // https://thepracticaldeveloper.com/guide-spring-boot-controller-tests/
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-@AutoConfigureMockMvc
 public class CustomerControllerWithSpringBootTestWithServerTest {
 
     @MockBean
